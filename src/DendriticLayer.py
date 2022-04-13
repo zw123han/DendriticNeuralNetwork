@@ -53,17 +53,20 @@ class DendriticLayer(nn.Module):
 
         # Initialize a weight matrix for each level of the tree
         # and simultaneously create a mask for each level to enforce tree structure
-        self.weights = []
+        weights = []
         self.masks = []
-        self.activations = []
+        activations = []
         num_in = in_features
         for i in list(range(self.depth)):
           num_out = int(num_in / branching)
-          self.weights.append(nn.Linear(num_in, num_out, bias=bias))
+          weights.append(nn.Linear(num_in, num_out, bias=bias))
           self.masks.append(self.build_mask(num_in, branching))
           if not isinstance(activation, type(None)):
-            self.activations.append(activation(**kwargs))
+            activations.append(activation(**kwargs))
           num_in = num_out
+
+        self.weights = nn.ModuleList(weights)
+        self.activations = nn.ModuleList(activations)
 
         # optional dropout layer; implement later once you understand better
         self.dropout = nn.Dropout(p=dropout)
