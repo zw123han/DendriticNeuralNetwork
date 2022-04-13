@@ -95,8 +95,8 @@ def train(model, args):
     loss_val =  loss(output, validation_y)
     acc_val = accuracy(output, validation_y)
 
-    print("***********************Epoch: {} ***************************".format(str(echo)))
+    print("***********************Epoch: {} ***************************".format(str(epoch)))
 
-    print("*****************************Train Loss: {}, Train Accuracy: {}".format(str(loss_train), str(acc_train))
+    print("*****************************Train Loss: {}, Train Accuracy: {}".format(str(loss_train), str(acc_train)))
 
     print("*****************************Validation Loss: {}, Validation Accuracy: {}".format(str(loss_val), str(acc_val)))
