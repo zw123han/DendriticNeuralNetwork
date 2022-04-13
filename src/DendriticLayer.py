@@ -1,3 +1,8 @@
+import math
+import numpy as np
+import torch
+import torch.nn as nn
+
 class DendriticLayer(nn.Module):
 
     def __init__(self, in_features: int, out_features: int = None, 
@@ -48,19 +53,17 @@ class DendriticLayer(nn.Module):
 
         # Initialize a weight matrix for each level of the tree
         # and simultaneously create a mask for each level to enforce tree structure
-        layers = []
-        masks = []
+        self.weights = []
+        self.masks = []
+        self.activations = []
         num_in = in_features
         for i in list(range(self.depth)):
           num_out = int(num_in / branching)
-          layers.append(nn.Linear(num_in, num_out, bias=bias))
-          masks.append(self.build_mask(num_in, branching))
+          self.weights.append(nn.Linear(num_in, num_out, bias=bias))
+          self.masks.append(self.build_mask(num_in, branching))
           if not isinstance(activation, type(None)):
-            layers.append(activation(**kwargs))
+            self.activations.append(activation(**kwargs))
           num_in = num_out
-
-        self.W = nn.Sequential(*layers)
-        self.masks = masks
 
         # optional dropout layer; implement later once you understand better
         self.dropout = nn.Dropout(p=dropout)
@@ -70,10 +73,12 @@ class DendriticLayer(nn.Module):
       x = self.dropout(x)
 
       for i in list(range(self.depth)):
-        masked_weight = self.W[i].weight * self.masks[i]
+        masked_weight = (self.weights[i].weight * self.masks[i]).float()
         x = torch.mm(x, torch.t(masked_weight))
         if self.bias:
-          x = x + self.W[i].bias
+          x = x + self.weights[i].bias
+        if (len(self.activations) > 0):
+          x = self.activations[i](x)
 
       return x
       
