@@ -66,7 +66,7 @@ def train(model, args):
   valid_accs = []
   # Load optimizer, and loss.
   optimizer = args['optimizer']()
-  loss = args('loss')()
+  loss = args['loss']()
   def accuracy(output, labels):
 
     # From programming assignment 4.
@@ -94,3 +94,9 @@ def train(model, args):
     # calculate validation loss and accuracy.
     loss_val =  loss(output, validation_y)
     acc_val = accuracy(output, validation_y)
+
+    print("***********************Epoch: {} ***************************".format(str(echo)))
+
+    print("*****************************Train Loss: {}, Train Accuracy: {}".format(str(loss_train), str(acc_train))
+
+    print("*****************************Validation Loss: {}, Validation Accuracy: {}".format(str(loss_val), str(acc_val)))
