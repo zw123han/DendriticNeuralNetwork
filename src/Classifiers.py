@@ -48,7 +48,7 @@ class MNISTClassifier(nn.Module):
         """
         super(MNISTClassifier, self).__init__()
         self.num_neurons = num_classes
-        self.neurons1 = DendriticLayer(in_features * num_classes, branching=8, depth=2 **kwargs)
+        self.neurons1 = DendriticLayer(in_features * num_classes, branching=8, depth=2, **kwargs)
         self.neurons2 = DendriticLayer(in_features * num_classes, branching=2, depth=4, **kwargs)
         self.softmax = nn.Softmax(dim=1)
 
