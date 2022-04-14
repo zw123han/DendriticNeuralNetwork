@@ -59,7 +59,13 @@ class DendriticLayer(nn.Module):
         num_in = in_features
         for i in list(range(self.depth)):
           num_out = int(num_in / branching)
-          weights.append(nn.Linear(num_in, num_out, bias=bias))
+
+          # Use Kaiming He initialization to account for nonlinear activations and sparsity
+          # TODO: double check this code
+          weight_layer = nn.Linear(num_in, num_out, bias=bias)
+          weight_layer.weight.data = torch.nn.init.normal_(weight_layer.weight.data, mean=0.0, std=math.sqrt(2/num_in))
+          weights.append(weight_layer)
+
           self.masks.append(self.build_mask(num_in, branching))
           if not isinstance(activation, type(None)):
             activations.append(activation(**kwargs))
