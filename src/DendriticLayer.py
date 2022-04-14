@@ -63,7 +63,8 @@ class DendriticLayer(nn.Module):
           # Use Kaiming He initialization to account for nonlinear activations and sparsity
           # TODO: double check this code
           weight_layer = nn.Linear(num_in, num_out, bias=bias)
-          weight_layer.weight.data = torch.nn.init.normal_(weight_layer.weight.data, mean=0.0, std=math.sqrt(2/num_in))
+          density = num_in / (num_in * num_out)   # sparsity compared to full MLP
+          weight_layer.weight.data = torch.nn.init.normal_(weight_layer.weight.data, mean=0.0, std=math.sqrt(2/(num_in*density)))
           weights.append(weight_layer)
 
           self.masks.append(self.build_mask(num_in, branching))
