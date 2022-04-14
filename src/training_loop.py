@@ -9,6 +9,18 @@ from torch.utils.data import DataLoader
 import torchvision
 
 
+# To filter mnist digits: https://stackoverflow.com/questions/57913825/how-to-select-specific-labels-in-pytorch-mnist-dataset
+class YourSampler(torch.utils.data.sampler.Sampler):
+    def __init__(self, mask, data_source):
+        self.mask = mask
+        self.data_source = data_source
+
+    def __iter__(self):
+        return iter([i.item() for i in torch.nonzero(mask)])
+
+    def __len__(self):
+        return len(self.data_source)
+
 def load_datasets(args):
   if(args["dataset"] == "mnist"):
     mnist_train = datasets.MNIST('data', train=True, download=True,
@@ -32,28 +44,77 @@ def load_datasets(args):
 
 
     bs = 128
-    train_dl = DataLoader(mnist_train, batch_size=bs)
+    train_dl = DataLoader(mnist_train, batch_size=bs, shuffle=True)
 
 
-    validation_dl = DataLoader(mnist_validation, batch_size = 100)
+    validation_dl = DataLoader(mnist_validation, batch_size = 100, shuffle=True)
 
-    test_dl = DataLoader(mnist_test, batch_size = 100)
+    test_dl = DataLoader(mnist_test, batch_size = 100, shuffle=True)
 
     dataiter = iter(train_dl)
     train_x, train_y = dataiter.next()
-    train_x = nn.Upsample(size=(32, 32))(train_x).view(-1, 32*32) # flatten
+    train_x = nn.Upsample(size=(32, 32))(train_x)
 
 
 
     dataiter = iter(validation_dl)
     validation_x, validation_y = dataiter.next()
-    validation_x = nn.Upsample(size=(32, 32))(validation_x).view(-1, 32*32)
+    validation_x = nn.Upsample(size=(32, 32))(validation_x)
 
 
     dataiter = iter(test_dl)
     test_x, test_y = dataiter.next()
-    test_x = nn.Upsample(size=(32, 32))(test_x).view(-1, 32*32)
+    test_x = nn.Upsample(size=(32, 32))(test_x)
 
+
+  else if(args["dataset"] == "mnist-49"):
+
+    mnist_train = datasets.MNIST('data', train=True, download=True,
+                          transform = torchvision.transforms.Compose([
+                            torchvision.transforms.ToTensor(),
+                            torchvision.transforms.Normalize((0.1307,),(0.3081,)),
+                        ]))
+
+    bs = 128
+    train_dl = DataLoader(mnist_train, batch_size=len(mnist_train))
+    dataiter = iter(train_dl)
+    train_x, train_y = dataiter.next()
+    train_x = nn.Upsample(size=(32, 32))(train_x)
+    filted_indices = np.logical_or(train_y == 4, train_y == 9)
+    train_y = train_y[filted_indices]
+    train_x = train_x[filted_indices]
+    sampled_indics = np.random.randint(0, len(train_x), size = bs)
+    train_y = train_y[sampled_indics]
+    train_x = train_x[sampled_indics]
+
+    # Validation and Test
+    mnist_validation_test = datasets.MNIST('data', train=False, download=True,
+                          transform = torchvision.transforms.Compose([
+                            torchvision.transforms.ToTensor(),
+                            torchvision.transforms.Normalize((0.1307,),(0.3081,)),
+                        ]))
+
+    bs = 100
+    validation_test_dl = DataLoader(mnist_train, batch_size=len(mnist_validation_test))
+    dataiter = iter(validation_test_dl)
+    validation_test_x, validation_test_y = dataiter.next()
+    validation_test_x = nn.Upsample(size=(32, 32))(validation_test_x)
+
+    # Validation
+    filted_indices = np.logical_or(validation_test_y == 4, validation_test_y == 9)
+    validation_test_y = validation_test_y[filted_indices]
+    validation_test_x = validation_test_x[filted_indices]
+    validation_sampled_indics = np.random.randint(0, len(validation_test_x), size = bs)
+    validation_y = validation_test_y[validation_sampled_indics]
+    validation_x = validation_test_x[validation_sampled_indics]
+
+
+
+    # Test
+    filted_indices = np.logical_or(validation_test_y == 4, validation_test_y == 9)
+    test_sampled_indics = np.random.randint(0, len(validation_test_x), size = bs)
+    test_y = validation_test_y[test_sampled_indics]
+    test_x = validation_test_x[test_sampled_indics]
 
     return train_x, validation_x, test_x, train_y, validation_y, test_y
 
