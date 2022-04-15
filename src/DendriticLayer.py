@@ -67,7 +67,7 @@ class DendriticLayer(nn.Module):
           weight_layer.weight.data = torch.nn.init.normal_(weight_layer.weight.data, mean=0.0, std=math.sqrt(2/(num_in*density)))
           weights.append(weight_layer)
 
-          self.masks.append(self.build_mask(num_in, branching))
+          self.masks.append(self.build_mask(num_in, branching).to(device=device))
           if not isinstance(activation, type(None)):
             activations.append(activation(**kwargs))
           num_in = num_out
