@@ -1,0 +1,52 @@
+---
+title: "analysis"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# packages
+library(tidyverse)
+```
+
+```{r}
+# read in data and add additional variables
+binary_mln <- read.csv("data/binary_mln.csv")
+binary_mln <- binary_mln %>% mutate(diff_loss = val_loss - train_loss, diff_acc = val_acc - train_acc)
+
+binary_mlp <- read.csv("data/binary_mlp.csv")
+binary_mlp <- binary_mlp %>% mutate(diff_loss = val_loss - train_loss, diff_acc = val_acc - train_acc)
+
+multiclass_mln <- read.csv("data/multiclass_mln.csv")
+multiclass_mln <- multiclass_mln %>% mutate(diff_loss = val_loss - train_loss, diff_acc = val_acc - train_acc)
+
+multiclass_mlp <- read.csv("data/multiclass_mlp.csv")
+multiclass_mlp <- multiclass_mlp %>% mutate(diff_loss = val_loss - train_loss, diff_acc = val_acc - train_acc)
+```
+
+```{r}
+# binary MLN
+binary_mln %>% group_by(branching, dropout, iteration) %>% arrange(val_loss) %>% slice_head(n=1) %>% ungroup() %>% group_by(branching, dropout) %>% summarize(n = n(), train_loss = paste(round(mean(train_loss), 2), round(sd(train_loss), 2), sep = " ± "), valid_loss = paste(round(mean(val_loss), 2), round(sd(val_loss), 2), sep = " ± "), diff_loss = paste(round(mean(diff_loss), 2), round(sd(diff_loss), 2), sep = " ± "), train_acc = paste(round(mean(train_acc), 2), round(sd(train_acc), 2), sep = " ± "), valid_acc = paste(round(mean(val_acc), 2), round(sd(val_acc), 2), sep = " ± "), diff_acc = paste(round(mean(diff_acc), 2), round(sd(diff_acc), 2), sep = " ± ")) %>% knitr::kable(caption = "Binary MLN (mnist-49)")
+
+```
+
+```{r}
+# binary MLP
+binary_mlp %>% group_by(mid_layer, dropout, iteration) %>% arrange(val_loss) %>% slice_head(n=1) %>% ungroup() %>% group_by(mid_layer, dropout) %>% summarize(n = n(), train_loss = paste(round(mean(train_loss), 2), round(sd(train_loss), 2), sep = " ± "), valid_loss = paste(round(mean(val_loss), 2), round(sd(val_loss), 2), sep = " ± "), diff_loss = paste(round(mean(diff_loss), 2), round(sd(diff_loss), 2), sep = " ± "), train_acc = paste(round(mean(train_acc), 2), round(sd(train_acc), 2), sep = " ± "), valid_acc = paste(round(mean(val_acc), 2), round(sd(val_acc), 2), sep = " ± "), diff_acc = paste(round(mean(diff_acc), 2), round(sd(diff_acc), 2), sep = " ± ")) %>% knitr::kable(caption = "Binary MLP (mnist-49)")
+
+```
+
+```{r}
+# multiclass MLN
+multiclass_mln %>% group_by(branching, dropout, iteration) %>% arrange(val_loss) %>% slice_head(n=1) %>% ungroup() %>% group_by(branching, dropout) %>% summarize(n = n(), train_loss = paste(round(mean(train_loss), 2), round(sd(train_loss), 2), sep = " ± "), valid_loss = paste(round(mean(val_loss), 2), round(sd(val_loss), 2), sep = " ± "), diff_loss = paste(round(mean(diff_loss), 2), round(sd(diff_loss), 2), sep = " ± "), train_acc = paste(round(mean(train_acc), 2), round(sd(train_acc), 2), sep = " ± "), valid_acc = paste(round(mean(val_acc), 2), round(sd(val_acc), 2), sep = " ± "), diff_acc = paste(round(mean(diff_acc), 2), round(sd(diff_acc), 2), sep = " ± ")) %>% knitr::kable(caption = "Multiclass MLN (mnist)")
+
+```
+
+```{r}
+# multiclass MLP
+multiclass_mlp %>% group_by(mid_layer, dropout, iteration) %>% arrange(val_loss) %>% slice_head(n=1) %>% ungroup() %>% group_by(mid_layer, dropout) %>% summarize(n = n(), train_loss = paste(round(mean(train_loss), 2), round(sd(train_loss), 2), sep = " ± "), valid_loss = paste(round(mean(val_loss), 2), round(sd(val_loss), 2), sep = " ± "), diff_loss = paste(round(mean(diff_loss), 2), round(sd(diff_loss), 2), sep = " ± "), train_acc = paste(round(mean(train_acc), 2), round(sd(train_acc), 2), sep = " ± "), valid_acc = paste(round(mean(val_acc), 2), round(sd(val_acc), 2), sep = " ± "), diff_acc = paste(round(mean(diff_acc), 2), round(sd(diff_acc), 2), sep = " ± ")) %>% knitr::kable(caption = "Multiclass MLP (mnist)")
+
+```
