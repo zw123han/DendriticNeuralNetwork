@@ -64,6 +64,7 @@ class ConvMLNNet(nn.Module):
         * `conv_args` - additional parameters for the convolutional neural net (`num_convs`, `num_in_channels`, `num_filters`, `kernel`)
         * `neuron_args` - additional parameters for the dendritic neurons (`branching`, `bias`, `dropout`, `activation`)
         """
+        super(ConvMLNNet, self).__init__()
         self.conv_layers = CNN(**conv_args)
         num_conv_layers = conv_args['num_convs'] if 'num_convs' in conv_args else 3
         self.classifier = cl.MLNClassifier(num_classes * (image_size / 2^num_conv_layers)**2, num_classes, **neuron_args)
@@ -87,6 +88,7 @@ class ConvDendriteNet(nn.Module):
         * `conv_args` - additional parameters for the convolutional neural net (`num_convs`, `num_in_channels`, `num_filters`, `kernel`)
         * `neuron_args` - additional parameters for the dendritic neurons (`branching`, `bias`, `dropout`, `activation`)
         """
+        super(ConvDendriteNet, self).__init__()
         self.conv_layers = CNN(**conv_args)
         num_conv_layers = conv_args['num_convs'] if 'num_convs' in conv_args else 3
         num_filters = conv_args['num_filters'] if 'num_filters' in conv_args else 4
