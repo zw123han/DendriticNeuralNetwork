@@ -28,6 +28,9 @@ multiclass_mlp <- multiclass_mlp %>% mutate(diff_loss = val_loss - train_loss, d
 
 multiclass_cnn_mln <- read.csv("data/multiclass_cnn_mln.csv")
 multiclass_cnn_mln <- multiclass_cnn_mln %>% mutate(diff_loss = val_loss - train_loss, diff_acc = val_acc - train_acc)
+
+multiclass_cnn_mlp <- read.csv("data/multiclass_cnn_mlp.csv")
+multiclass_cnn_mlp <- multiclass_cnn_mlp %>% mutate(diff_loss = val_loss - train_loss, diff_acc = val_acc - train_acc)
 ```
 
 ```{r}
@@ -56,7 +59,14 @@ multiclass_mlp %>% group_by(mid_layer, dropout, iteration) %>% arrange(val_loss)
 
 
 ```{r}
-# multiclass CNN MLP
+# multiclass CNN MLN
 multiclass_cnn_mln %>% group_by(branching, dropout, iteration) %>% arrange(val_loss) %>% slice_head(n=1) %>% ungroup() %>% group_by(branching, dropout) %>% summarize(n = n(), train_loss = paste(round(mean(train_loss), 2), round(sd(train_loss), 2), sep = " ± "), valid_loss = paste(round(mean(val_loss), 2), round(sd(val_loss), 2), sep = " ± "), diff_loss = paste(round(mean(diff_loss), 2), round(sd(diff_loss), 2), sep = " ± "), train_acc = paste(round(mean(train_acc), 2), round(sd(train_acc), 2), sep = " ± "), valid_acc = paste(round(mean(val_acc), 2), round(sd(val_acc), 2), sep = " ± "), diff_acc = paste(round(mean(diff_acc), 2), round(sd(diff_acc), 2), sep = " ± ")) %>% knitr::kable(caption = "Multiclass CNN MLP (mnist)")
+
+```
+
+
+```{r}
+# multiclass CNN MLP
+multiclass_cnn_mlp %>% group_by(mid_layer, dropout, iteration) %>% arrange(val_loss) %>% slice_head(n=1) %>% ungroup() %>% group_by(mid_layer, dropout) %>% summarize(n = n(), train_loss = paste(round(mean(train_loss), 2), round(sd(train_loss), 2), sep = " ± "), valid_loss = paste(round(mean(val_loss), 2), round(sd(val_loss), 2), sep = " ± "), diff_loss = paste(round(mean(diff_loss), 2), round(sd(diff_loss), 2), sep = " ± "), train_acc = paste(round(mean(train_acc), 2), round(sd(train_acc), 2), sep = " ± "), valid_acc = paste(round(mean(val_acc), 2), round(sd(val_acc), 2), sep = " ± "), diff_acc = paste(round(mean(diff_acc), 2), round(sd(diff_acc), 2), sep = " ± ")) %>% knitr::kable(caption = "Multiclass CNN MLP (mnist)")
 
 ```
