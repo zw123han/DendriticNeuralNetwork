@@ -8,19 +8,6 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 import torchvision
 
-
-# To filter mnist digits: https://stackoverflow.com/questions/57913825/how-to-select-specific-labels-in-pytorch-mnist-dataset
-class YourSampler(torch.utils.data.sampler.Sampler):
-    def __init__(self, mask, data_source):
-        self.mask = mask
-        self.data_source = data_source
-
-    def __iter__(self):
-        return iter([i.item() for i in torch.nonzero(mask)])
-
-    def __len__(self):
-        return len(self.data_source)
-
 # To filter mnist digits: https://stackoverflow.com/questions/57913825/how-to-select-specific-labels-in-pytorch-mnist-dataset
 class YourSampler(torch.utils.data.sampler.Sampler):
     def __init__(self, mask, data_source):
