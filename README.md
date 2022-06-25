@@ -10,6 +10,6 @@ You can find the PyTorch implementation for a dendritic layer under `src/Dendrit
 #### Results & Reproducibility
 The results from our experiments for each type of network compared can be found under `data`. Data analysis was performed in `R` and can be found in `analysis.Rmd`.
 
-#### Experiemnt setup
+#### Experiment setup
 The `src` folder may contain artifacts from debugging and prototyping training loops. Please use the setup below for the most updated version of the experimental setup.
 Colab Experiments: https://colab.research.google.com/drive/1btI3uJzI4LOC9Q6OBf67UYq_GnlxKZe9?usp=sharing
