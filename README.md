@@ -1,7 +1,7 @@
 ### Dendritic Neural Networks
 
 #### Paper
-DyNN workshop at the 39th International Conference on Machine Learning
+_DyNN workshop at the 39th International Conference on Machine Learning_
 https://arxiv.org/abs/2207.00708
 
 #### About
@@ -16,3 +16,11 @@ The experiemnt data for each type of network compared can be found under `data`.
 #### Experiment setup
 The `src` folder may contain artifacts from debugging and prototyping training loops. Please use the setup below for the most updated version of the experimental setup.
 Colab Experiments: https://colab.research.google.com/drive/1btI3uJzI4LOC9Q6OBf67UYq_GnlxKZe9?usp=sharing
+
+#### Citation
+@article{2022parameterdendrite,
+  title={Parameter efficient dendritic-tree neurons outperform perceptrons},
+  author={Han, Ziwen and Gorobets, Evgeniya and Chen, Pan},
+  journal={arXiv preprint arXiv:2207.00708},
+  year={2022}
+}
