@@ -18,9 +18,9 @@ The `src` folder may contain artifacts from debugging and prototyping training l
 Colab Experiments: https://colab.research.google.com/drive/1btI3uJzI4LOC9Q6OBf67UYq_GnlxKZe9?usp=sharing
 
 #### Citation
-@article{2022parameterdendrite,
-  title={Parameter efficient dendritic-tree neurons outperform perceptrons},
-  author={Han, Ziwen and Gorobets, Evgeniya and Chen, Pan},
-  journal={arXiv preprint arXiv:2207.00708},
-  year={2022}
+@article{2022parameterdendrite,  
+  title={Parameter efficient dendritic-tree neurons outperform perceptrons},  
+  author={Han, Ziwen and Gorobets, Evgeniya and Chen, Pan},  
+  journal={arXiv preprint arXiv:2207.00708},  
+  year={2022}  
 }
