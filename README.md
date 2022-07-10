@@ -1,5 +1,8 @@
 ### Dendritic Neural Networks
 
+#### Paper
+DyNN workshop at the 39th International Conference on Machine Learning
+https://arxiv.org/abs/2207.00708
 
 #### About
 This repo contains the code and data required to replicate our work on dendritic-tree neural networks. We were inspired by the input dendrites of biological neurons, which recent neuroscience research has revealed to contain complex, non-linear computations.
